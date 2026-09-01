@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= editing ? 'Edit Blog' : 'Create Blog' %> | MYBLOGSPACE</title>
+  <link rel="stylesheet" href="/create-blog.css" />
+</head>
+
+<body>
+
+  <script>
+    if (localStorage.getItem("siteTheme") === "light") {
+      document.body.classList.add("light-mode");
+    }
+  </script>
+
+  <div class="sidebar">
+    <h2>MYBLOGSPACE</h2>
+
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/notification">Notifications</a>
+      <a href="/messages">Messages</a>
+      <a href="/profil">Profile</a>
+      <a href="/login">Logout</a>
+    </nav>
+
+    <a href="/create-blog">
+      <button class="post-btn">Create Blog</button>
+    </a>
+  </div>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h2><%= editing ? 'Edit Your Blog' : 'Create a New Blog' %></h2>
+      <p>
+        <%= editing
+          ? 'Update your blog and save your changes.'
+          : 'Share your thoughts and ideas with the community.' %>
+      </p>
+    </div>
+
+    <div class="form-container">
+
+      <form
+        action="<%= editing ? '/update-blog/' + blog._id : '/submit-blog' %>"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+
+        <div class="form-group">
+          <label for="title">Blog Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            value="<%= editing ? blog.title : '' %>"
+            placeholder="Enter your blog title"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea
+            id="content"
+            name="content"
+            rows="10"
+            required
+            placeholder="Write your blog content here..."
+          ><%= editing ? blog.content : '' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="tags">Tags (comma-separated)</label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            placeholder="e.g. Travel, Foodie, Assam"
+            value="<%= editing ? blog.tags.join(',') : '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="schedule">Schedule Blog?</label>
+
+          <select
+            id="schedule"
+            name="schedule"
+            onchange="toggleScheduleTime(this.value)"
+          >
+            <option
+              value="no"
+              <%= editing && !blog.scheduled ? 'selected' : '' %>
+            >
+              No
+            </option>
+
+            <option
+              value="yes"
+              <%= editing && blog.scheduled ? 'selected' : '' %>
+            >
+              Yes
+            </option>
+          </select>
+        </div>
+
+        <div
+          id="scheduleTimeContainer"
+          class="form-group schedule-time"
+          style="display: none;"
+        >
+          <label for="scheduleTime">Choose Date & Time</label>
+
+          <input
+            type="datetime-local"
+            id="scheduleTime"
+            name="scheduleTime"
+            value="<%= editing && blog.scheduleTime ? blog.scheduleTime.toISOString().slice(0,16) : '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="image">Upload Image</label>
+
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+          >
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <%= editing ? 'Save Changes' : 'Publish Blog' %>
+        </button>
+
+      </form>
+
+    </div>
+
+    <div class="back-container">
+      <a href="/profil" class="back-btn">Back to Profile</a>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleScheduleTime(value) {
+      const container = document.getElementById('scheduleTimeContainer');
+
+      if (value === 'yes') {
+        container.style.display = 'block';
+      } else {
+        container.style.display = 'none';
+      }
+    }
+
+    window.onload = () => {
+      toggleScheduleTime(document.getElementById('schedule').value);
+    };
+  </script>
+
+</body>
+</html>

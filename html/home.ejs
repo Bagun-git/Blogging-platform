@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home | MYBLOGSPACE</title>
+  <link rel="stylesheet" href="home.css" />
+  <script src="/home.js" defer></script>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>MYBLOGSPACE</h2>
+    <nav>
+      <a href="home" class="active">Home</a>
+      <a href="notification">Notifications</a>
+      <a href="messages">Messages</a>
+      <a href="profil">Profile</a>
+      <a href="login">Logout</a>
+    </nav>
+    <a href="create-blog">
+    <button class="post-btn">Create Blog</button>
+    </a>
+  </div>
+
+  <!-- Main Feed -->
+<div class="main">
+  <div class="top-bar">
+    <h2>Feed</h2>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+      <span aria-hidden="true">&#9788;</span>
+    </button>
+  </div>
+
+  <% blogs.forEach(blog => { %>
+    <div class="tweet">
+     <div class="user">
+
+  <% if (blog.authorId && blog.authorId._id) { %>
+
+    <img
+      src="<%= blog.authorId.profilePic || '/images/default-pfp-23.jpg' %>"
+      alt="Profile Pic"
+      class="profile-pic"
+    >
+
+    <a href="/user/<%= blog.authorId._id %>" class="username">
+      @<%= blog.authorName || "Anonymous" %>
+    </a>
+
+    <% 
+      const isSelf = blog.authorId._id.equals(currentUserId);
+      const isFollowing =
+        blog.authorId.followers &&
+        blog.authorId.followers.includes(currentUserId);
+    %>
+
+    <% if (!isSelf) { %>
+
+      <button
+        type="button"
+        class="followBtn <%= isFollowing ? 'following' : 'follow' %>"
+        data-userid="<%= blog.authorId._id %>"
+      >
+        <%= isFollowing ? 'Following' : 'Follow' %>
+      </button>
+
+    <% } %>
+
+  <% } else { %>
+
+    <img
+      src="/images/default-pfp-23.jpg"
+      alt="Profile Pic"
+      class="profile-pic"
+    >
+
+    <span class="username">
+      @<%= blog.authorName || "Anonymous" %>
+    </span>
+
+  <% } %>
+
+</div>
+      <h3><%= blog.title %></h3>
+      <p>
+  <%= blog.content.length > 200 ? blog.content.substring(0, 200) + '...' : blog.content %>
+ <% if (blog.content.length > 200) { %>
+    <a href="/blog/<%= blog._id %>">Read more</a>
+  <% } %>
+ </p>
+      <% if (blog.imagePath) { %>
+        <img src="<%= blog.imagePath %>" alt="Blog Image" width="300" />
+      <% } %>
+      <hr />
+    </div>
+    <div class="blog-actions" data-blogid="<%= blog._id %>">
+  <button class="like-btn">👍 Like <span class="like-count"><%= blog.likes.length %></span></button>
+  <button class="dislike-btn">👎 Dislike <span class="dislike-count"><%= blog.dislikes.length %></span></button>
+</div>
+
+  <% }) %>
+</div>
+
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <div class="search-bar">
+      <input type="text"id="searchInput" placeholder="Search" autocomplete="off"/>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+
+     <div class="who-to-follow">
+  <h3>Follow more</h3>
+  <div id="suggestion-container">
+    <% randomUsers.forEach(u => {
+      const isFollowing = u.followers && u.followers.includes(currentUserId); %>
+      <div class="user-suggestion">
+        <img src="<%= u.profilePic || '/images/default-pfp-23.jpg' %>" alt="User" />
+        <div class="user-info" data-id="<%= u._id %>" style="cursor: pointer;">
+          <strong><%= u.fullname %></strong><br>
+          <span>@<%= u.fullname.replace(/\s/g, '') %></span>
+        </div>
+         <button class="followBtn <%= isFollowing ? 'following' : 'follow' %>" data-userid="<%= u._id %>">
+          <%= isFollowing ? "Following" : "Follow" %>
+        </button>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+  </div>
+</body>
+</html>

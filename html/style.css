@@ -1,0 +1,86 @@
+/* Whole Page Background and Font */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #dbeafe, #fef3c7);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* White Card Container */
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+
+/* Logo + Website Name */
+.logo-section img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.logo-section h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #222;
+  font-weight: bold;
+}
+
+/* Form Header */
+.login-form h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Input Fields */
+.login-form input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Submit Button */
+.login-form button {
+  width: 95%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-form button:hover {
+  background-color: #2563eb;
+}
+
+/* Text and Links Below Button */
+.login-form p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Anchor Tags */
+.login-form a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}

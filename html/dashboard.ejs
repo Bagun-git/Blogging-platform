@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | MYBLOGSPACE</title>
+  <link rel="stylesheet" href="/dashboard.css">
+</head>
+
+<body>
+
+  <script>
+    if (localStorage.getItem("siteTheme") === "light") {
+      document.body.classList.add("light-mode");
+    }
+  </script>
+
+  <div class="sidebar">
+    <h2>MYBLOGSPACE</h2>
+
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/notification">Notifications</a>
+      <a href="/messages">Messages</a>
+      <a href="/profil" class="active">Profile</a>
+      <a href="/login">Logout</a>
+    </nav>
+
+    <a href="/create-blog">
+      <button class="post-btn">Create Blog</button>
+    </a>
+  </div>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1>Welcome to your Dashboard, <%= user.fullname %>!</h1>
+      <p>Here is an overview of your blogging activity.</p>
+    </div>
+
+    <div class="section">
+      <h3>Your Statistics</h3>
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <span class="stat-title">Total Blogs</span>
+          <strong><%= blogs.length %></strong>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">Followers</span>
+          <strong><%= user.followers.length %></strong>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">Following</span>
+          <strong><%= user.following.length %></strong>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">Total Likes</span>
+          <strong>
+            <%= blogs.reduce((sum, b) => sum + (b.likes ? b.likes.length : 0), 0) %>
+          </strong>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">Total Dislikes</span>
+          <strong>
+            <%= blogs.reduce((sum, b) => sum + (b.dislikes ? b.dislikes.length : 0), 0) %>
+          </strong>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Recent Blogs</h3>
+
+      <div class="blogs-list">
+
+        <% if (blogs.length === 0) { %>
+
+          <div class="empty-state">
+            <p>You haven't created any blogs yet.</p>
+            <a href="/create-blog">Create your first blog</a>
+          </div>
+
+        <% } else { %>
+
+          <% blogs.forEach(blog => { %>
+
+            <div class="blog-card">
+
+              <div class="blog-info">
+                <h4><%= blog.title %></h4>
+                <span class="blog-date">
+                  <%= blog.createdAt.toDateString() %>
+                </span>
+              </div>
+
+              <a href="/blog/<%= blog._id %>" class="show-btn">
+                Show Blog
+              </a>
+
+            </div>
+
+          <% }) %>
+
+        <% } %>
+
+      </div>
+    </div>
+
+    <div class="back-container">
+      <a href="/profil" class="back-btn">
+        Back to Profile
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>
